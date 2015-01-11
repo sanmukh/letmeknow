@@ -1,0 +1,8 @@
+#requests: exit: exitstatus of scripts. name: name of the process. fetch: fetch the exit status
+#responses: retval: retval of this script, data: html data.
+
+curl --request POST "http://kuppanna:kappausc@hughli.usc.edu/protected/letmeknow/test1.cgi?exit=0&name=kuppanna"
+
+curl --request GET "http://kuppanna:kappausc@hughli.usc.edu/protected/letmeknow/test1.cgi?fetch"
+
+Enable apache modules dav, dav_fs, cgid
