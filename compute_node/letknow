@@ -1,0 +1,22 @@
+#!/bin/bash
+#TODO: 
+#put a proper parse args 
+#options include:
+#1. pid (-p)
+#2. output exec's output to stdout 
+#
+
+#upload as per the protocol
+function upload_status()
+{
+ echo $@
+}
+
+EXEC="$@"
+PROCNAME=$1
+$EXEC >> letmeknow.log & 
+pid=$!
+wait $pid
+RETVAL=$?
+
+upload_status $PROCNAME $RETVAL 
