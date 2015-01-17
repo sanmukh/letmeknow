@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function wait_on_process()
+{
+ while kill -0 $1 2>/dev/null; do
+  sleep 0.5
+ done
+}
+
+#TODO:upload as per the protocol
+function upload_status()
+{
+ echo $@
+}
+
+if [[ $# -eq 0 ]]
+then
+ echo "Enter the pid of the process (Note return status will be incorrect):"
+ read PID
+ wait_on_process $PID
+ RETVAL=0 #We cannot find retval for a process which is not child
+else
+ EXEC="$@"
+ PROCNAME=$1
+ $EXEC >> letmeknow.log & 
+ PID=$!
+ wait $PID
+ RETVAL=$?
+fi
+
+upload_status $PROCNAME $RETVAL 
