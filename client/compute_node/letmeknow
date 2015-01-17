@@ -27,9 +27,9 @@ then
  RETVAL=0 #We cannot find retval for a process which is not child
 else
  EXEC="$@"
- PROCNAME=`basename $1`_$PID
  $EXEC >> letmeknow.log & 
  PID=$!
+ PROCNAME=`basename $1`_$PID
  wait $PID
  RETVAL=$?
 fi
