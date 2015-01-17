@@ -1,4 +1,9 @@
 #!/bin/bash
+#curl --request POST "http://kuppanna:kappausc@hughli.usc.edu/protected/letmeknow/letmeknow.cgi?exit=0&name=kuppanna"
+#TODO: letmknow script should go to background
+#tee output to stdout
+
+URL="http://kuppanna:kappausc@hughli.usc.edu/protected/letmeknow/letmeknow.cgi"
 
 function wait_on_process()
 {
@@ -7,21 +12,22 @@ function wait_on_process()
  done
 }
 
-#TODO:upload as per the protocol
-function upload_status()
+upload_status()
 {
- echo $@
+ curl --request POST ${URL}"?exit="$2"&name="$1
 }
 
 if [[ $# -eq 0 ]]
 then
  echo "Enter the pid of the process (Note return status will be incorrect):"
  read PID
+ UPROCNAME=`ps $PID | awk -v PID=$PID '{ if ($1 == PID ) print $5;}'`
+ PROCNAME=`basename $UPROCNAME`_$PID
  wait_on_process $PID
  RETVAL=0 #We cannot find retval for a process which is not child
 else
  EXEC="$@"
- PROCNAME=$1
+ PROCNAME=`basename $1`_$PID
  $EXEC >> letmeknow.log & 
  PID=$!
  wait $PID
@@ -29,3 +35,6 @@ else
 fi
 
 upload_status $PROCNAME $RETVAL 
+
+
+
